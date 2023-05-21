@@ -8,8 +8,8 @@
 // ============================================================================
 
 // 必要なモジュールを読み込み
-import * as THREE from '../lib/three.module.js';
-import { OrbitControls } from '../lib/OrbitControls.js';
+import * as THREE from './lib/three.module.js';
+import { OrbitControls } from './lib/OrbitControls.js';
 
 window.addEventListener('DOMContentLoaded', () => {
   const app = new App('#webgl');
