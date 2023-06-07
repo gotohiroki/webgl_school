@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <script src="script.js" type="module"></script>
+    <style>
+      * {margin: 0; padding: 0;}
+      html, body {
+        overflow: hidden;
+      }
+      .buttons {
+        position: absolute;
+        z-index: 100;
+        bottom: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        /* flex-wrap: wrap; */
+        /* width: 200px; */
+        gap: 15px;
+      }
+
+      button {
+        display: block;
+        cursor: pointer;
+        flex-shrink: 1;
+        height: 60px;
+        font-size: 18px;
+        font-weight: 700;
+        width: 33.33333%;
+        width: 50px;
+        border: none;
+      }
+
+      .power, .swing {
+        flex-shrink: 0;
+        width: 150px;
+        /* border-radius: 60px; */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="webgl"></div>
+    <div class="buttons">
+      <button class="power">電源</button>
+      <button class="swing">首ふり</button>
+      <button class="high">大</button>
+      <button class="mid">中</button>
+      <button class="low">小</button>
+    </div>
+  </body>
+</html>
+
