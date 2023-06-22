@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <script src="script.js" type="module"></script>
+    <style>
+      * {margin: 0; padding: 0;}
+      html, body {
+        overflow: hidden;
+      }
+      .controller {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 2rem;
+        color: #000;
+        font-size: 1.2rem;
+
+        input {
+          margin-right: .5em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="webgl"></div>
+    <div class="controller">
+      <label><input type="checkbox" name="viewChange" id="viewChange"> 一人称視点</label>
+      <!-- <p>キーボード↓：着陸</p>
+      <p>キーボード↑：離陸</p>
+      <p>キーボード→：右旋回</p>
+      <p>キーボード←：左旋回</p> -->
+    </div>
+  </body>
+</html>
+
