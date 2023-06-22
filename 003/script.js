@@ -27,9 +27,9 @@ class App3 {
       aspect: window.innerWidth / window.innerHeight,
       near: 0.1,
       far: 200.0,
-      x: 10.0,
-      y: 6.0,
-      z: 0.0,
+      x: -80.0,
+      y: -80.0,
+      z: -40.0,
       lookAt: new THREE.Vector3(0.0, 0.0, 0.0),
     };
   }
@@ -39,6 +39,7 @@ class App3 {
   static get RENDERER_PARAM() {
     return {
       clearColor: 0xdfdfdf,
+      clearColor: 0x212121,
       width: window.innerWidth,
       height: window.innerHeight,
     };
@@ -50,8 +51,8 @@ class App3 {
     return {
       color: 0xffffff, // 光の色
       intensity: .8,  // 光の強度
-      x: 3.0,          // 光の向きを表すベクトルの X 要素
-      y: 3.0,          // 光の向きを表すベクトルの Y 要素
+      x: 15.0,          // 光の向きを表すベクトルの X 要素
+      y: 15.0,          // 光の向きを表すベクトルの Y 要素
       z: 5.0           // 光の向きを表すベクトルの Z 要素
     };
   }
@@ -61,7 +62,7 @@ class App3 {
   static get AMBIENT_LIGHT_PARAM() {
     return {
       color: 0xffffff, // 光の色
-      intensity: .3,  // 光の強度
+      intensity: .6,  // 光の強度
     };
   }
 
@@ -115,7 +116,7 @@ class App3 {
    */
   static get PILOT_PARAM() {
     return {
-      color: 0xf66504, // マテリアルの基本色
+      color: 0xffffff, // マテリアルの基本色
       radius: .3,
       height: .9,
       radiusSegments: 10
@@ -262,14 +263,18 @@ class App3 {
     this.createMoon(); // 月
     this.treeManager(); // 木
     this.createPlane(); // 飛行機
+    this.createStar()
 
     // コントロール
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 
-    // ヘルパー
-    // const axesBarLength = 5.0;
-    // this.axesHelper = new THREE.AxesHelper(axesBarLength);
-    // this.scene.add(this.axesHelper);
+    gsap.to(this.camera.position, {
+      x: 10,
+      y: 10,
+      z: -10,
+      duration: 3,
+      ease: 'expo.inOut',
+    });
 
   }
 
@@ -352,6 +357,11 @@ class App3 {
     this.createTree(160, 180)
 
     this.createTree(90, 180)
+    this.createTree(100, 180)
+
+    this.createTree(230, 230)
+    this.createTree(240, 220)
+    this.createTree(240, 250)
   }
 
   createPlane() {
@@ -363,8 +373,8 @@ class App3 {
     this.planeBodyGeometry = new THREE.CapsuleGeometry(
       .3,
       .9,
-      4,
-      8
+      9,
+      6
     );
     this.planeBody = new THREE.Mesh(this.planeBodyGeometry, this.planeMaterial);
     // this.planeBody.rotation.z = Math.PI / 2;
@@ -381,20 +391,39 @@ class App3 {
     this.planeWing.rotation.y = Math.PI / 2;
     this.planeGroup.add(this.planeWing);
 
-    // this.planeMaterial = new THREE.MeshBasicMaterial({color:App3.PILOT_PARAM.color});
-    // this.planeGeometry = new THREE.ConeGeometry(
-    //   App3.PILOT_PARAM.radius,
-    //   App3.PILOT_PARAM.height,
-    //   App3.PILOT_PARAM.radiusSegments
-    // );
-    // this.plane = new THREE.Mesh(this.planeGeometry, this.planeMaterial);
+    // 後ろの羽
+    this.planeWingBackGeometry = new THREE.BoxGeometry(
+      .5,
+      .2,
+      .3
+    );
+    this.planeBackWing = new THREE.Mesh(this.planeWingBackGeometry, this.planeWingMaterial);
+    this.planeBackWing.scale.setScalar(.5);
+    this.planeBackWing.position.set(-.3, -.3, 0.0);
+    this.planeGroup.add(this.planeBackWing);
+
+    this.planeWingBackRightGeometry = new THREE.BoxGeometry(
+      .8,
+      .2,
+      .3
+    );
+    this.planeBackRightWing = new THREE.Mesh(this.planeWingBackRightGeometry, this.planeWingMaterial);
+    this.planeBackRightWing.position.set(-.18, -.35, -.2);
+    this.planeBackRightWing.rotation.y = Math.PI / 2 + .5;
+    this.planeBackRightWing.scale.setScalar(.5);
+    this.planeGroup.add(this.planeBackRightWing);
+
+    this.planeBackLeftWing = this.planeBackRightWing.clone();
+    this.planeBackLeftWing.position.set(-.18, -.35, .2);
+    this.planeBackLeftWing.rotation.y = Math.PI / 2 - 2.5;
+    this.planeGroup.add(this.planeBackLeftWing);
 
     this.plane = new THREE.Group();
     this.plane.add(this.planeGroup);
     this.scene.add(this.plane);
     this.plane.rotation.set(0,0,-Math.PI * 2 - 1);
     // this.plane.rotation.set(0, 0, Math.PI * 2 -1.6);
-    this.plane.scale.setScalar(1.05);
+    this.plane.scale.setScalar(.8);
 
     this.plane.position.set(0, App3.PLANE_DISTANCE, 0);
 
@@ -402,6 +431,31 @@ class App3 {
     this.planeDirection = new THREE.Vector3(1.0, 1.0, 0.0).normalize();
 
   };
+
+  createStar() {
+    // Particles
+    const particlesGeometry = new THREE.BufferGeometry();
+    const particlesCount = 1500;
+
+    const vertices = new Float32Array(particlesCount);
+
+    for (let i = 0; i < particlesCount; i++) {
+      vertices[i] = (Math.random() - 0.5) * 100;
+    }
+
+    particlesGeometry.setAttribute(
+      'position',
+      new THREE.BufferAttribute(vertices, 3)
+    );
+    const particleSize = .15;
+    const particlesMaterial = new THREE.PointsMaterial({
+      size: particleSize,
+      color: 0xffffff,
+    });
+
+    const stars = new THREE.Points(particlesGeometry, particlesMaterial);
+    this.scene.add(stars);
+  }
 
   /**
    * 描画処理
