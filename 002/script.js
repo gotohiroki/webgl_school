@@ -2,8 +2,8 @@
 // = 017 ======================================================================
 // Group を駆使して「首振り機能つきの扇風機」を実現
 // ============================================================================
-import * as THREE from './lib/three.module.js';
-import { OrbitControls } from './lib/OrbitControls.js';
+import * as THREE from '../lib/three.module.js';
+import { OrbitControls } from '../lib/OrbitControls.js';
 
 
 window.addEventListener('DOMContentLoaded', () => {
