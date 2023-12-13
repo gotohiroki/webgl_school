@@ -15,3 +15,27 @@ html, body {
 canvas {
   margin: 0px auto;
 }
+
+.buttons {
+  mix-blend-mode: difference;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  gap: .5rem;
+  color: #fff;
+}
+
+.buttons a {
+  display: block;
+  font-size: 14px;
+  padding: .6em .8em;
+  line-height: 1;
+  text-decoration: none;
+  color: initial;
+  background-color: #fff;
+}
+
+.buttons a.current {
+  text-decoration: underline;
+}
